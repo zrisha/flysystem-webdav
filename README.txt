@@ -1,4 +1,4 @@
-Flysystem Dropbox
+Flysystem WebDAV
 =================
 
 For setup instructions see the Flysystem README.txt.
@@ -7,18 +7,15 @@ For setup instructions see the Flysystem README.txt.
 
 Example configuration:
 
-$schemes = [
-  'dropboxexample' => [
-    'driver' => 'dropbox',
-    'config' => [
-      'token' => 'a-long-token-string',
-      'client_id' => 'You Client Id Name',
 
-      // Optional.
-      'prefix' => 'a/sub/directory',
-      'public' => TRUE, // Serve files directly via Dropbox.
-    ],
+'webdav' => [
+  'driver' => 'webdav',
+  'config' => [
+    'base_uri' => 'http://my-webdav-repo.com',
+    'user_name' => 'username',
+    'password' => 'password,
+    'prefix' => 'webdav/index.php',
+    'path' => 'documents'
   ],
-];
-
-$settings['flysystem'] = $schemes;
+  'cache' => TRUE,
+]
