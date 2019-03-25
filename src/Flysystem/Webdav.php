@@ -23,6 +23,8 @@ use League\Flysystem\Filesystem;
  * @Adapter(id = "webdav")
  */
 class Webdav implements FlysystemPluginInterface {
+  
+  use FlysystemUrlTrait;
 
  /**
    * The WebDAV client.
@@ -132,7 +134,7 @@ class Webdav implements FlysystemPluginInterface {
         'password' => $this->password,
       ), $this->path);
     }
-    
+
     return $this->client;
   }
   
