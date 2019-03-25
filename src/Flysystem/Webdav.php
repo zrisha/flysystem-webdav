@@ -24,8 +24,6 @@ use League\Flysystem\Filesystem;
  */
 class Webdav implements FlysystemPluginInterface {
 
-  use FlysystemUrlTrait;
-
  /**
    * The WebDAV client.
    *
@@ -38,7 +36,7 @@ class Webdav implements FlysystemPluginInterface {
    *
    * @var string
    */
-  protected $baseURI;
+  protected $baseUri;
 
   /**
    * The path prefix inside the WebDAV folder.
@@ -61,6 +59,12 @@ class Webdav implements FlysystemPluginInterface {
   */
   protected $password;
 
+  /**
+  * The WebDAV path.
+  *
+  * @var string
+  */
+  protected $path;
 
   /**
    * Constructs a Webdav object.
@@ -72,9 +76,10 @@ class Webdav implements FlysystemPluginInterface {
    */
   public function __construct(array $configuration) {
     $this->prefix = isset($configuration['prefix']) ? $configuration['prefix'] : '';
-    $this->baseURI = $configuration['base_uri'];
+    $this->baseUri = $configuration['base_uri'];
     $this->userName = $configuration['user_name'];
     $this->password = $configuration['password'];
+    $this->path = $configuration['path'];
   }
 
   /**
@@ -97,20 +102,22 @@ class Webdav implements FlysystemPluginInterface {
    */
   public function ensure($force = FALSE) {
     try {
-      $flysystem = new Filesystem($adapter);
-      $files = $flysystem->listContents('/', true);
+      $flysystem = new Filesystem($this->getAdapter());
+      $files = $flysystem->has('');
+      $flysystem->listContents('');
     }
     catch (\Exception $e) {
+      error_log(print_r($e->getTraceAsString(), 1));
       return [[
         'severity' => RfcLogLevel::ERROR,
         'message' => 'The Webdav client failed with: %error.',
         'context' => ['%error' => $e->getMessage()],
-      ]];
+        ]];
+      }
+  
+      return [];
     }
-
-    return [];
-  }
-
+  
   /**
    * Returns the Webdav client.
    *
@@ -119,10 +126,14 @@ class Webdav implements FlysystemPluginInterface {
    */
   protected function getClient() {
     if (!isset($this->client)) {
-      $this->client = new Client($this->token, $this->clientId);
+      $this->client = new Client(array(
+        'baseUri' => $this->baseUri,
+        'userName'=> $this->userName,
+        'password' => $this->password,
+      ), $this->path);
     }
-
+    
     return $this->client;
   }
-
-}
+  
+}  
