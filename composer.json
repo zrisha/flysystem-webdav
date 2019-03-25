@@ -1,0 +1,6 @@
+{
+  "name": "drupal/flysystem_webdav",
+  "require": {
+    "league/flysystem-webdav": "~1.0"
+  }
+}

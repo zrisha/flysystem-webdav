@@ -1,0 +1,14 @@
+name: Flysystem Webdav
+description: 'Provides a Webdav plugin for Flysystem.'
+package: Flysystem
+type: module
+# core: 8.x
+# version: 8.0-dev
+dependencies:
+ - flysystem
+
+# Information added by Drupal.org packaging script on 2016-07-21
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'flysystem_webdav'
+datestamp: 1469067249
