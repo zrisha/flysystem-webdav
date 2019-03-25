@@ -7,7 +7,8 @@
 
 namespace Drupal\flysystem_webdav\Flysystem;
 
-use Sabre\DAV\Client;
+use Sabre\DAV\Client as DAVClient;
+use Sabre\HTTP;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\flysystem\Flysystem\Adapter\MissingAdapter;
 use Drupal\flysystem\Plugin\FlysystemPluginInterface;
@@ -18,7 +19,7 @@ use League\Flysystem\WebDAV\WebDAVAdapter;
 use League\Flysystem\Filesystem;
 
 
-class ClientMod extends Client{
+class Client extends DAVClient{
   /**
    * Coppied from the DAV lib with small edit due to XML error
    */
@@ -196,7 +197,7 @@ class Webdav implements FlysystemPluginInterface {
    */
   protected function getClient() {
     if (!isset($this->client)) {
-      $this->client = new ClientMod(array(
+      $this->client = new Client(array(
         'baseUri' => $this->baseUri,
         'userName'=> $this->userName,
         'password' => $this->password,
