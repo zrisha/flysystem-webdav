@@ -3,6 +3,7 @@
 namespace Drupal\flysystem_webdav\Flysystem\Client;
 
 use Sabre\DAV\Client as DAVClient;
+use Sabre\HTTP;
 
 class Client extends DAVClient{
   /**

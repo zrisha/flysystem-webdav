@@ -8,7 +8,6 @@
 namespace Drupal\flysystem_webdav\Flysystem;
 
 use Drupal\flysystem_webdav\Flysystem\Client\Client;
-use Sabre\HTTP;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\flysystem_webdav\Flysystem\Adapter\WebDAVAdapter;
 use Drupal\flysystem\Flysystem\Adapter\MissingAdapter;
