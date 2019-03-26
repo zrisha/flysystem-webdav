@@ -15,54 +15,10 @@ use Drupal\flysystem\Plugin\FlysystemPluginInterface;
 use Drupal\flysystem\Plugin\FlysystemUrlTrait;
 use Drupal\flysystem\Plugin\ImageStyleGenerationTrait;
 use GuzzleHttp\Psr7\Uri;
-use League\Flysystem\WebDAV\WebDAVAdapter as DAVAdapter;
 use League\Flysystem\Filesystem;
 
+include_once('./WebDavAdapter.php');
 
-class WebDAVAdapter extends DAVAdapter{
-  private static $metadataFields = [
-    '{DAV:}displayname',
-    '{DAV:}creationdate',
-    '{DAV:}getcontentlength',
-    '{DAV:}getcontenttype',
-    '{DAV:}isroot',
-    '{DAV:}getlastmodified',
-    '{SeedDMS:}id',
-    '{DAV:}resourcetype',
-    '{DAV:}getcontenttype'
-  ];
-
-  public function listContents($directory = '', $recursive = false)
-  {
-      $location = $this->applyPathPrefix($this->encodePath($directory));
-      $response = $this->client->propFind($location, self::$metadataFields, 1);
-
-      array_shift($response);
-      $result = [];
-
-      foreach ($response as $path => $object) {
-          $path = rawurldecode($this->removePathPrefix($path));
-          $object = $this->normalizeObject($object, $path);
-          $result[] = $object;
-
-          if ($recursive && $object['type'] === 'dir') {
-              $result = array_merge($result, $this->listContents($object['path'], true));
-          }
-      }
-
-      return $result;
-  }
-
-  private function isDirectory(array $object)
-  {
-    if(isset($object['{DAV:}resourcetype'])){
-      $val = $object['{DAV:}resourcetype']->getValue();
-      return $val[0] === '{DAV:}collection';
-    } else{
-      return false;
-    }
-  }
-}
 
 class Client extends DAVClient{
   /**
