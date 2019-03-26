@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Flysystem\WebDAV;
+namespace Drupal\flysystem_webdav\Flysystem\Adapter;
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;

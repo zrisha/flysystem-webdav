@@ -17,8 +17,6 @@ use Drupal\flysystem\Plugin\ImageStyleGenerationTrait;
 use GuzzleHttp\Psr7\Uri;
 use League\Flysystem\Filesystem;
 
-include_once('./WebDavAdapter.php');
-
 
 class Client extends DAVClient{
   /**
