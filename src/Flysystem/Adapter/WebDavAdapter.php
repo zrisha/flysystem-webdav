@@ -22,6 +22,7 @@ class WebDAVAdapter extends AbstractAdapter
     }
     use NotSupportingVisibilityTrait;
 
+    //Edit: Reconfiguration metadatafields to match LOR
     private static $metadataFields = [
       '{DAV:}displayname',
       '{DAV:}creationdate',
@@ -287,6 +288,7 @@ class WebDAVAdapter extends AbstractAdapter
     public function listContents($directory = '', $recursive = false)
     {
         $location = $this->applyPathPrefix($this->encodePath($directory));
+        //Edit: Remove '/' from location
         $response = $this->client->propFind($location, self::$metadataFields, 1);
   
         array_shift($response);
@@ -406,6 +408,7 @@ class WebDAVAdapter extends AbstractAdapter
 
     private function isDirectory(array $object)
     {
+      //Edit: Rewrite to use correct DAV props
       if(isset($object['{DAV:}resourcetype'])){
         $val = $object['{DAV:}resourcetype']->getValue();
         return $val[0] === '{DAV:}collection';
